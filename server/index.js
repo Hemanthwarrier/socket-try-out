@@ -2,11 +2,14 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 
-const http = require('http').Server(app)
-const io = require('socket.io')(http)
-
 const cors = require('cors')
 app.use(cors())
+
+const http = require('http')
+const socketIo = require('socket.io')
+const server = http.createServer(app);
+const io = socketIo(server);
+
 
 app.get('/',(req,res)=>{
     res.send("Hello World")
@@ -23,6 +26,6 @@ io.on('connection',(socket)=>{
 })
 
 const PORT = process.env.PORT || 8000
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
     console.log(`Server listening to port:${PORT}`)
 })
